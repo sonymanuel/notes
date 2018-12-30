@@ -1,6 +1,5 @@
 package com.sm.notes.controller;
 
-
 import com.sm.notes.exception.ResourceNotFoundException;
 import com.sm.notes.model.Note;
 import com.sm.notes.repository.NoteRepository;
@@ -9,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
+
+/** REST API class for notes app **/
 
 @RestController
 @RequestMapping("/api")
