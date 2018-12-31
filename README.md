@@ -17,4 +17,4 @@ $java -jar target/notes-0.0.1-SNAPSHOT.jar
 
 4. To test, post a note using curl :
 
-
+$curl -X POST
