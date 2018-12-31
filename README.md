@@ -14,3 +14,7 @@ $docker run -dit --env-file ./envfile -p 3306:3306 --name notesmysql mysql
 $java -jar target/notes-0.0.1-SNAPSHOT.jar
 
 3. Access the app at http://localhost:8080/api/notes
+
+4. To test, post a note using curl :
+
+
