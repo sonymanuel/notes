@@ -17,4 +17,4 @@ $java -jar target/notes-0.0.1-SNAPSHOT.jar
 
 4. To test, post a note using curl :
 
-$curl -X POST
+$curl -X POST http://localhost:8080/api/notes -d '{ "title": "my first note", "content": "first sprint boot app"}' -H "Content-Type: application/json"
