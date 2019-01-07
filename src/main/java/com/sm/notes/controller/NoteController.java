@@ -2,6 +2,7 @@ package com.sm.notes.controller;
 
 import com.sm.notes.exception.ResourceNotFoundException;
 import com.sm.notes.model.Note;
+import com.sm.notes.model.Version;
 import com.sm.notes.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class NoteController {
+
+    @GetMapping("/version")
+    public Version getVersion() throws Exception {
+        return new Version().loadVersion();
+    }
 
     @Autowired
     NoteRepository noteRepository;
