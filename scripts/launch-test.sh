@@ -8,8 +8,6 @@ echo MYSQL_USER=user >> envfile
 echo MYSQL_PASSWORD=password >> envfile
 echo MYSQL_DATABASE=notes_app >> envfile
 
-exit 1;
-
 #launch mysql docker container
 docker run -dit --name notesmysql -p3306:3306 --env-file=./envfile mysql
 
