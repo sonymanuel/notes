@@ -5,11 +5,21 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.net.Inet4Address;
 import java.util.Properties;
 
 public class Version implements Serializable {
     String version;
     String commit;
+    String hostname;
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
+    }
 
     @JsonIgnoreProperties
     static Version ver = null;
@@ -29,6 +39,7 @@ public class Version implements Serializable {
                 ver = new Version();
                 ver.setVersion(props.getProperty("version"));
                 ver.setCommit(props.getProperty("commit"));
+                ver.setHostname(Inet4Address.getLocalHost().getHostName());
             } finally {
                 if (is != null) {
                     is.close();

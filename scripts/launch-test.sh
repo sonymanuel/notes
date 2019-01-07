@@ -1,5 +1,9 @@
 #!/bin/bash -x
 
+#use the notes image version that is passed via cmdline; 
+#if no value, default to latest
+image_ver=${1:-latest}
+
 cd $(dirname $0)
 
 #setup mysql env file
@@ -19,7 +23,7 @@ ipaddr=`docker container inspect notesmysql -f '{{json .NetworkSettings.IPAddres
 echo "mysql IP address = $ipaddr "
 
 #launch notes docker image
-docker run -dit --name notes -p 7080:8080 -e mysql_host=$ipaddr notes.img
+docker run -dit --name notes -p 7080:8080 -e mysql_host=$ipaddr notes.img:${image_ver}
 
 sleep 30
 
