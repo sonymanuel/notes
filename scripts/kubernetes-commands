@@ -1,0 +1,95 @@
+
+1. Deploy mysql 
+
+$kubectl run notesmysql --image=mysql --port=3306 --env MYSQL_ROOT_PASSWORD=admin --env MYSQL_USER=user --env MYSQL_PASSWORD=password --env MYSQL_DATABASE=notes_app
+
+2. Start mysql service
+
+$kubectl expose deployment notesmysql --type=ClusterIP
+
+$kubectl get services
+
+Note the ClusterIP for notesmysql service 
+
+3. Deploy notes application
+
+$kubectl run notes --replicas=2 --image=sonymanuel/notes.img:v14 --env mysql_host=<notesmysql-clusterip> --port=8080
+
+eg;
+
+$kubectl run notes --replicas=2 --image=sonymanuel/notes.img:v14 --env mysql_host=10.100.186.226 --port=8080
+
+4. Start notes service 
+
+$kubectl expose deployment notes --type=LoadBalancer
+
+5. Access the app/Smoketest
+
+$minikube service notes --url=true
+
+Access the app :
+
+$curl http://192.168.99.100:31536/api/version
+
+Run the functional test :
+$mvn test -Dtest=com.sm.notes.test.NotesFunctionalTest -DnotesURL=http://192.168.99.100:31536/api/notes
+
+Check on mysql instance :
+
+$kubectl exec -it <mysql-pod> bash 
+
+Login to mysql 
+$mysql -u user -p
+$show databases;
+$use notes_app;
+$show tables;
+$select * from notes;
+
+Post a request :
+curl -X POST http://192.168.99.100:31661/api/notes -d '{ "title": "demo note2", "content": "note from demo"}' -H "Content-Type: application/json"
+
+
+6. Rolling upgrade to next version :
+
+$kubectl describe deployment notes
+
+$kubectl set image deployments/notes notes=sonymanuel/notes.img:v15
+
+$kubectl describe deployment notes (check deployment events)
+
+$kubectl get pods
+
+$kubectl rollout status deployments/notes
+
+7. Smoke Test :
+
+$curl http://192.168.99.100:31536/api/version
+
+$mvn test -Dtest=com.sm.notes.test.NotesIntegrationTest -DnotesURL=http://192.168.99.100:31536/api/notes
+
+8. Undo upgrade :
+
+$kubectl rollout undo deployments/notes
+
+$kubectl rollout status deployments/notes
+
+$kubectl describe deployment notes
+
+9. Smoke test : Access the app :
+
+$curl http://192.168.99.100:31536/api/version (version should be v14)
+
+
+------------------
+
+Production rollout strategy
+
+$kubectl create ns production
+
+$kubectl run nginx --image nginx --port=80 -n production
+
+$kubectl expose deployment nginx- --type=LoadBalancer
+
+$minikube service nginx --url=true -n production
+
+
