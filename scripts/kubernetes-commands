@@ -48,6 +48,7 @@ $select * from notes;
 Post a request :
 curl -X POST http://192.168.99.100:31661/api/notes -d '{ "title": "demo note2", "content": "note from demo"}' -H "Content-Type: application/json"
 
+Launch dashboard
 
 6. Rolling upgrade to next version :
 
@@ -60,6 +61,11 @@ $kubectl describe deployment notes (check deployment events)
 $kubectl get pods
 
 $kubectl rollout status deployments/notes
+
+curl loop to check access application status while upgrade is in progress :
+
+while true; do curl http://192.168.99.100:31261/api/version; echo ; sleep 1; done
+
 
 7. Smoke Test :
 
