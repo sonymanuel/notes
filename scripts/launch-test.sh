@@ -18,12 +18,12 @@ docker run -dit --name notesmysql -p3306:3306 --env-file=./envfile mysql
 sleep 180
 
 #extract mysql ipaddr
-ipaddr=`docker container inspect notesmysql -f '{{json .NetworkSettings.IPAddress}}' | xargs `
+ipaddr=`docker container inspect notesmysql -f '{{json .NetworkSettings.IPAddress}}' | xargs`
 
 echo "mysql IP address = $ipaddr "
 
 #launch notes docker image
-docker run -dit --name notes -p 7080:8080 -e mysql_host=$ipaddr notes.img:${image_ver}
+docker run -dit --name notes -p 7080:8080 -e mysql_host=$ipaddr notes.img:v${image_ver}
 
 sleep 30
 
